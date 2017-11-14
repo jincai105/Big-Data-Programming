@@ -1,0 +1,11 @@
+val df2 = spark.read.format("csv").option("header","true").option("timestampFormat", "MM/dd/yyyy hh:mm:ss a").option("mode","DROPMALFORMED").option("inferSchema","true").csv("/home/bill/Crimes.csv")
+var timeCrime = df2.withColumn("Hour",hour($"Date")).groupBy("Hour").count().orderBy("Hour")
+var timeCrime2 = test.withColumn("Hour",hour($"Date")).groupBy("Hour","Primary Type").count().orderBy("Hour")
+var timeCrime3 = df2.withColumn("Hour",hour($"Date")).groupBy("Hour","Primary Type").count().orderBy("Hour")
+var arrestRate = df2.groupBy("Arrest").count()
+var arrestType = test.groupBy("Primary Type","Arrest") 
+var blockArrested = df2.filter($"Year">2007 && $"Year" <2013).groupBy("Community Area").count().orderBy("Community Area")
+var theftMap = df2.filter($"Year">2007 && $"Year" <2013 && "Primary Type" === "THEFT").groupBy("Community Area").count().orderBy("Community Area")
+var batteryMap = df2.filter($"Year">2007 && $"Year" <2013 && $"Primary Type" === "BATTERY").groupBy("Community Area").count().orderBy("Community Area")
+var MonthCrime = df2.withColumn("Month",month($"Date")).groupBy("Month").count().orderBy("Month")
+
